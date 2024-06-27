@@ -1,0 +1,30 @@
+{
+  "name": "transcoder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/client-sqs": "^3.600.0",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "mime-types": "^2.1.35",
+    "mongoose": "^8.4.4"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^20.14.9",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

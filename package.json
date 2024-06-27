@@ -1,0 +1,18 @@
+{
+  "name": "video-codec-hub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n \"server,client,consumer\" -c \"bgRed,bgBlue,bgYellow\" \"npm:dev-server\" \"npm:dev-client\" \"npm:dev-consumer\"",
+    "dev-server": "cd ./server && npm run dev",
+    "dev-client": "cd ./client && npm run dev",
+    "dev-consumer": "cd ./consumer && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
