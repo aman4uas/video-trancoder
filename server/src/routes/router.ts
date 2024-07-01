@@ -7,6 +7,8 @@ import {
   createVideoObject,
   getUserData,
   getUserVideoDetails,
+  validateSignupDataAndGenerateOTP,
+  resendOTP,
 } from '../controllers'
 import { auth } from '../middlewares'
 
@@ -17,6 +19,8 @@ router.post('/file/onupload', auth, createVideoObject)
 router.get('/file/details', auth, getUserVideoDetails)
 
 router.post('/user/signup', signup)
+router.post('/user/signup/otp', validateSignupDataAndGenerateOTP)
+router.post('/user/signup/resend-otp', resendOTP)
 router.post('/user/login', login)
 router.get('/user/data', auth, getUserData)
 

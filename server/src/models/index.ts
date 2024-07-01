@@ -1,3 +1,4 @@
 import User from './user.model'
 import Video from './video.model'
-export { User, Video }
+import OTP from './otp.model'
+export { User, Video, OTP }

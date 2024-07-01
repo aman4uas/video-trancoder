@@ -1,27 +1,85 @@
-import { useState } from 'react'
-import { APP_NAME } from '../constants'
-import { Link } from 'react-router-dom'
-import { toastMessage, apiPostRequest, errorHandler } from '../utils'
+import React, { useState } from 'react'
+import { APP_NAME, RESEND_OTP_TIME } from '../constants'
+import { Link, useNavigate } from 'react-router-dom'
+import SignUpForm from './SignupForm'
+import OTP from './OTP'
+import { apiPostRequest, errorHandler, toastMessage } from '../utils'
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const Signup = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [otp, setOtp] = useState('')
+  const [otpSent, setOtpSent] = useState(false)
+  const [disableButton, setDisableButton] = useState(false)
 
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const resendOtp = async (
+    resendTimer: (time: number) => void,
+    setResendOTPButtonDisable: (disableVar: boolean) => void
+  ) => {
     try {
-      event.preventDefault()
-      if (password !== confirmPassword) {
-        toastMessage('Password and ConfirmPassword do not match', false)
+      setResendOTPButtonDisable(true)
+      const response = await apiPostRequest(BACKEND_URL + '/user/signup/resend-otp', false, {
+        email,
+      })
+      setResendOTPButtonDisable(false)
+      if (errorHandler(response)) {
         return
       }
-      const url = import.meta.env.VITE_BACKEND_URL + '/user/signup'
-      const response = await apiPostRequest(url, false, { email, password })
+      toastMessage('OTP sent successfully !!', true)
+      resendTimer(RESEND_OTP_TIME)
+    } catch (error) {
+      console.log(error)
+      setResendOTPButtonDisable(false)
+      toastMessage('Something went wrong !!', false)
+    }
+  }
+
+  const generateOTP = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setDisableButton(true)
+    if (password !== confirmPassword) {
+      toastMessage('Passwords do not match !!', false)
+      return
+    }
+    try {
+      const response = await apiPostRequest(BACKEND_URL + '/user/signup/otp', false, {
+        email,
+        password,
+      })
+      setDisableButton(false)
       if (errorHandler(response)) return
+      setOtpSent(true)
+      toastMessage('OTP sent to Mail', true)
+    } catch (error) {
+      console.log(error)
+      setDisableButton(false)
+    }
+  }
+
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (otp.length > 10) {
+      toastMessage('OTP size too large !!', false)
+      return
+    }
+    setDisableButton(true)
+    try {
+      const response = await apiPostRequest(BACKEND_URL + '/user/signup', false, {
+        email,
+        password,
+        otp,
+      })
+      setDisableButton(false)
+      if (errorHandler(response)) return
+      navigate('/signin')
       toastMessage('User created successfully !!', true)
     } catch (error) {
       console.log(error)
-      toastMessage('Something went wrong !!', false)
+      setDisableButton(false)
     }
   }
 
@@ -34,73 +92,29 @@ const Signup = () => {
         </Link>
         <div className="w-full bg-gray-800 rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">Create an account</h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={submitHandler}>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-white">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
-                  placeholder="johndoe@email.com"
-                  required={true}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-white">Password</label>
-                <input
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type="password"
-                  placeholder="••••••••"
-                  className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
-                  required={true}
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-white">Confirm password</label>
-                <input
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  type="password"
-                  placeholder="••••••••"
-                  className="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5"
-                  required={true}
-                />
-              </div>
-              <div className="flex items-start">
-                <div className="flex items-center h-5">
-                  <input
-                    id="terms"
-                    aria-describedby="terms"
-                    type="checkbox"
-                    className="w-4 h-4 border border-gray-600 rounded bg-gray-700 focus:ring-3 focus:ring-yellow-600"
-                    required={true}
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <label htmlFor="terms" className="font-light text-gray-300">
-                    I accept the{' '}
-                    <a className="font-medium text-yellow-500 hover:underline" href="#">
-                      Terms and Conditions
-                    </a>
-                  </label>
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-yellow-800"
-              >
-                Create an account
-              </button>
-              <p className="text-sm font-light text-gray-400">
-                Already have an account?{' '}
-                <Link to="/signin" className="font-medium text-yellow-500 hover:underline">
-                  Sign in here
-                </Link>
-              </p>
-            </form>
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+              {otpSent ? 'Enter OTP' : 'Create an account'}
+            </h1>
+            {!otpSent ? (
+              <SignUpForm
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                confirmPassword={confirmPassword}
+                setPassword={setPassword}
+                setConfirmPassword={setConfirmPassword}
+                generateOTP={generateOTP}
+                disableButton={disableButton}
+              />
+            ) : (
+              <OTP
+                otp={otp}
+                setOtp={setOtp}
+                resendOtp={resendOtp}
+                submitHandler={submitHandler}
+                disableButton={disableButton}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,4 +1,14 @@
-import { signup, login, getUserData } from './user'
+import { signup, login, getUserData, validateSignupDataAndGenerateOTP, resendOTP } from './user'
 import { generateSignedUrl, createVideoObject, getUserVideoDetails } from './file'
 import { authenticated } from './extra'
-export { signup, login, authenticated, generateSignedUrl, createVideoObject, getUserData, getUserVideoDetails }
+export {
+  signup,
+  login,
+  authenticated,
+  generateSignedUrl,
+  createVideoObject,
+  getUserData,
+  getUserVideoDetails,
+  validateSignupDataAndGenerateOTP,
+  resendOTP,
+}
