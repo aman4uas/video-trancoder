@@ -189,12 +189,12 @@ const Dashboard = () => {
                       Uploaded On <span className="font-mono text-white">→ </span>{' '}
                       <span className="text-white not-italic">{formatDate(new Date(video.createdAt))}</span>
                     </p>
-                    {/* {video.status === 'Queued' && (
+                    {video.status === 'Queued' && (
                       <p className="mt-5 italic font-mono text-red-400">
                         If the status doesn't change to "Processing" within 1-2 minutes of a fresh reload, it may
                         indicate that the transcoder or consumer is intentionally offline to save resources or costs.
                       </p>
-                    )} */}
+                    )}
                   </div>
 
                   {video.status === 'Success' && (
