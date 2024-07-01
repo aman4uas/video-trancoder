@@ -6,25 +6,18 @@ import { MAX_FILE_SIZE_IN_MB, BUCKET_NAME, SIGNED_URL_EXPIRY } from '../constant
 import { s3Client, getFileExtension } from '../utils'
 import { Video } from '../models'
 
-interface CustomRequest extends Request {
-  query: {
-    sizeOfFile: string
-    typeOfFile: string
-    fileName: string
-  }
-  user: {
-    email: string
-  }
-}
-
-const generateSignedUrl = async (req: CustomRequest, res: Response) => {
+const generateSignedUrl = async (req: Request, res: Response) => {
   try {
-    const { sizeOfFile, typeOfFile, fileName } = req.query
+    const { sizeOfFile, typeOfFile, fileName } = req.query as {
+      sizeOfFile: string
+      typeOfFile: string
+      fileName: string
+    }
 
     if (parseInt(sizeOfFile) > MAX_FILE_SIZE_IN_MB * 1024 * 1024) {
       return res.status(200).json({
         success: false,
-        message: 'File size very large',
+        message: `For demo we allow file less ${MAX_FILE_SIZE_IN_MB} MB`,
       })
     }
     if (!typeOfFile.startsWith('video/')) {
@@ -58,8 +51,8 @@ const generateSignedUrl = async (req: CustomRequest, res: Response) => {
 
 const createVideoObject = async (req: Request, res: Response) => {
   try {
-    const { fileName } = req.body
-    await Video.create({ fileName, createdBy: req.user.email })
+    const { fileName, fileSize } = req.body
+    await Video.create({ fileName, createdBy: req.user.email, size: fileSize, link: '' })
     return res.status(200).json({
       success: true,
       message: 'Successfully updated video status!!',
@@ -73,4 +66,53 @@ const createVideoObject = async (req: Request, res: Response) => {
   }
 }
 
-export { generateSignedUrl, createVideoObject }
+const getUserVideoDetails = async (req: Request, res: Response) => {
+  const userEmail = req.user.email
+  if (!userEmail || userEmail === undefined) {
+    return res.status(200).json({
+      success: false,
+      message: 'Cannot find User Email',
+    })
+  }
+
+  const pipeline = [
+    { $match: { createdBy: userEmail } },
+    { $group: { _id: '$status', count: { $sum: 1 } } },
+    { $project: { status: '$_id', count: 1, _id: 0 } },
+    {
+      $group: {
+        _id: null,
+        statuses: { $push: { status: '$status', count: '$count' } },
+        total: { $sum: '$count' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        result: {
+          $concatArrays: ['$statuses', [{ status: 'Total', count: '$total' }]],
+        },
+      },
+    },
+    { $unwind: '$result' },
+    { $replaceRoot: { newRoot: '$result' } },
+  ]
+
+  const response1 = await Video.aggregate(pipeline)
+  if (response1.length === 0) {
+    return res.status(200).json({
+      success: true,
+      hasVideos: false,
+    })
+  }
+  const response2 = await Video.find({ createdBy: userEmail }).select('-createdBy -fileName').sort({ createdAt: -1 })
+
+  return res.status(200).json({
+    success: true,
+    hasVideos: true,
+    statusData: response1,
+    videoData: response2,
+  })
+}
+
+export { generateSignedUrl, createVideoObject, getUserVideoDetails }

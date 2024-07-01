@@ -14,7 +14,10 @@ app.use(cors({ origin: '*', credentials: true }))
 app.use(router)
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Server is running !!')
+  res.status(200).json({
+    success: true,
+    message: 'Server is up and running !!',
+  })
 })
 
 export default app

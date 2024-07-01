@@ -104,4 +104,18 @@ const login = async (req: Request, res: Response) => {
   }
 }
 
-export { signup, login }
+const getUserData = async (req: Request, res: Response) => {
+  const email = req.user.email
+  if (email) {
+    return res.status(200).json({
+      success: true,
+      data: email,
+    })
+  }
+  return res.status(200).json({
+    success: false,
+    message: 'Cannot get user email',
+  })
+}
+
+export { signup, login, getUserData }

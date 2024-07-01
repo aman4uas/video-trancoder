@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -n \"server,client,consumer\" -c \"bgRed,bgBlue,bgYellow\" \"npm:dev-server\" \"npm:dev-client\" \"npm:dev-consumer\"",
+    "dev-with-consumer": "concurrently -n \"server,client,consumer\" -c \"bgRed,bgBlue,bgYellow\" \"npm:dev-server\" \"npm:dev-client\" \"npm:dev-consumer\"",
+    "dev": "concurrently -n \"server,client\" -c \"bgRed,bgBlue\" \"npm:dev-server\" \"npm:dev-client\"",
     "dev-server": "cd ./server && npm run dev",
     "dev-client": "cd ./client && npm run dev",
     "dev-consumer": "cd ./consumer && npm run dev"

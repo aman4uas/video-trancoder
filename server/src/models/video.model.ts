@@ -20,6 +20,10 @@ const VideoSchema = new Schema<IVideo>({
     type: String,
     trim: true,
   },
+  size: {
+    type: Number,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

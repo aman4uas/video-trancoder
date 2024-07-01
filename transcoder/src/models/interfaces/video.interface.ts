@@ -14,6 +14,7 @@ interface IVideo extends Document {
   status: EStatus
   link: string
   createdAt: Date
+  size: number
 }
 
 export { IVideo, EStatus }
