@@ -69,8 +69,6 @@ const processQueue = async () => {
           console.log(error)
         }
       }
-    } else {
-      console.log('No messages to process')
     }
   } catch (error) {
     console.log('Something went wrong !!')
