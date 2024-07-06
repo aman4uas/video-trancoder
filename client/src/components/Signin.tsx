@@ -26,8 +26,8 @@ const Signin = () => {
     }
   }
   return (
-    <section className="bg-gray-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <section className="bg-gray-900 min-h-screen">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
         <Link to="/" className="flex items-center mb-6 text-2xl font-semibold text-white">
           <img className="w-12 h-12 rounded-2xl mr-2" src="logo.png" alt="logo" />
           {APP_NAME}

@@ -54,7 +54,9 @@ const Navbar = () => {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="logo.png" className="h-12 rounded-full" alt={`${APP_NAME} Logo`} />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">{APP_NAME}</span>
+          <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+            {APP_NAME}
+          </span>
         </Link>
 
         <div className="-translate-x-8 hidden md:flex items-center space-x-3 md:space-x-0 rtl:space-x-reverse relative">
@@ -113,15 +115,27 @@ const Navbar = () => {
                 <div className="font-medium truncate">{email || 'Undefined-User'}</div>
               </div>
               <div className="py-1 block md:hidden">
-                <Link to="/site" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">
-                  Sites
+                <Link
+                  to="/dashboard"
+                  className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white"
+                >
+                  Dashboard
+                </Link>
+              </div>
+
+              <div className="py-1 block md:hidden">
+                <Link
+                  to="/pricing"
+                  className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white"
+                >
+                  Pricing
                 </Link>
               </div>
 
               <div className="py-1">
                 <button
                   onClick={logoutHandler}
-                  className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white"
+                  className="block w-full px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white"
                 >
                   Sign out
                 </button>
