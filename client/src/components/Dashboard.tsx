@@ -185,7 +185,7 @@ const Dashboard = () => {
           >
             <h2 className="text-3xl font-bold mb-4 text-white">Video Uploads</h2>
 
-            <div className="flex flex-col justify-center md:grid md:grid-cols-3 xl:grid-cols-4 md:gap-6 m-2">
+            <div className="flex flex-col justify-center md:grid grid-cols-3 md:gap-6">
               {videoData.map((video) => (
                 <div
                   key={video._id}
