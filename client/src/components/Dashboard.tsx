@@ -7,7 +7,14 @@ import { FaPlay, FaRegSadCry } from 'react-icons/fa'
 import { BiSolidCopy } from 'react-icons/bi'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { Tooltip as ReactTooltip } from 'react-tooltip'
-import { apiGetRequest, authHandler, errorHandler, formatDate, formatFileSize, toastMessage } from '../utils'
+import {
+  apiGetRequest,
+  authHandler,
+  errorHandler,
+  formatDate,
+  formatFileSize,
+  toastMessage,
+} from '../utils'
 
 interface Video {
   _id: string
@@ -55,7 +62,10 @@ const Dashboard = () => {
     const init = async () => {
       setLoading(true)
       try {
-        const response = await apiGetRequest(`${import.meta.env.VITE_BACKEND_URL}/file/details`, true)
+        const response = await apiGetRequest(
+          `${import.meta.env.VITE_BACKEND_URL}/file/details`,
+          true
+        )
         if (authHandler(response)) return
         if (errorHandler(response)) return
         if (!response.data.hasVideos) {
@@ -115,14 +125,21 @@ const Dashboard = () => {
         <div className="my-[22vh] h-full flex flex-col items-center justify-center">
           <FaRegSadCry className="text-6xl text-gray-500 mb-4" />
           <p className="text-2xl font-semibold text-gray-500 mb-2">No Videos Found</p>
-          <p className="text-lg text-gray-400 mb-6">Start uploading your videos to see the status here.</p>
+          <p className="text-lg text-gray-400 mb-6">
+            Start uploading your videos to see the status here.
+          </p>
         </div>
       )}
       {!loading && hasData === true && (
         <>
-          <div id="top" className="p-2 my-2 w-full flex flex-col md:flex-row items-center justify-evenly">
-            <div className="w-full md:w-1/2 h-[75vh] translate-x-12 max-h-[28rem] md:max-h-[32rem] flex flex-col justify-center items-center">
-              <h2 className="text-2xl font-bold mb-4 text-white text-center md:text-left">Status Overview</h2>
+          <div
+            id="top"
+            className="p-2 my-2 w-full flex flex-col md:flex-row items-center justify-evenly"
+          >
+            <div className="w-full md:w-1/2 h-[75vh] md:translate-x-12 max-h-[28rem] md:max-h-[32rem] flex flex-col justify-center items-center">
+              <h2 className="text-2xl font-bold mb-4 text-white text-center md:text-left">
+                Status Overview
+              </h2>
               <Chart
                 success={chatData.success}
                 failed={chatData.failed}
@@ -158,11 +175,14 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:flex md:w-1/2 -translate-x-12 md:pl-12 items-center justify-center p-4">
+            <div className="hidden md:flex md:w-1/2 md:-translate-x-12 md:pl-12 items-center justify-center p-4">
               <img className="h-full max-h-[70vh]" src="girl-img.png" alt="img" />
             </div>
           </div>
-          <div id="bottom" className="mt-32 text-center flex items-center flex-col md:text-left px-4 py-8">
+          <div
+            id="bottom"
+            className="mt-32 text-center flex items-center flex-col md:text-left px-4 py-8"
+          >
             <h2 className="text-3xl font-bold mb-4 text-white">Video Uploads</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 m-2">
@@ -187,12 +207,15 @@ const Dashboard = () => {
                     </p>
                     <p className="mb-1 italic text-gray-100">
                       Uploaded On <span className="font-mono text-white">→ </span>{' '}
-                      <span className="text-white not-italic">{formatDate(new Date(video.createdAt))}</span>
+                      <span className="text-white not-italic">
+                        {formatDate(new Date(video.createdAt))}
+                      </span>
                     </p>
                     {video.status === 'Queued' && (
                       <p className="mt-5 italic font-mono text-red-400">
-                        If the status doesn't change to "Processing" within 1-2 minutes of a fresh reload, it may
-                        indicate that the transcoder or consumer is intentionally offline to save resources or costs.
+                        If the status doesn't change to "Processing" within 1-2 minutes of a fresh
+                        reload, it may indicate that the transcoder or consumer is intentionally
+                        offline to save resources or costs.
                       </p>
                     )}
                   </div>
