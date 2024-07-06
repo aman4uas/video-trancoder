@@ -1,5 +1,5 @@
 {
-  "name": "video-codec-hub",
+  "name": "video-transcoder",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

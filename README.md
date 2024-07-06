@@ -2,7 +2,7 @@
 
 ## 🔗 Live Demo/Website Link
 
-[ **_Video Codec Hub_** ](https://video-codec-hub.vercel.app)
+[ **_Video Codec Hub_** ](https://transcodepro.vercel.app)
 
 ## Technology Stack
 

@@ -7,6 +7,7 @@ const BUCKET_NAME = 'video-codec-hub-temp'
 const SIGNED_URL_EXPIRY = 60 * 60 /* In seconds */
 const OTP_EXPIRY_TIME = 5 /* In Minutes */
 const OTP_LENGTH = 4
+const RESET_PASSWORD_TIME_LIMIT = '24h'
 
 export {
   DB_NAME,
@@ -18,4 +19,5 @@ export {
   SIGNED_URL_EXPIRY,
   OTP_EXPIRY_TIME,
   OTP_LENGTH,
+  RESET_PASSWORD_TIME_LIMIT,
 }

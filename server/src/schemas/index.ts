@@ -1,2 +1,15 @@
-import { signupSchema, loginSchema, signupSchemaWithOTP } from './zod'
-export { signupSchema, loginSchema, signupSchemaWithOTP }
+import {
+  signupSchema,
+  loginSchema,
+  signupSchemaWithOTP,
+  resetPasswordTokenSchema,
+  resetPasswordSchema,
+} from './zod'
+
+export {
+  signupSchema,
+  loginSchema,
+  signupSchemaWithOTP,
+  resetPasswordTokenSchema,
+  resetPasswordSchema,
+}
