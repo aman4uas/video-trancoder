@@ -181,7 +181,7 @@ const Dashboard = () => {
           </div>
           <div
             id="bottom"
-            className="mt-32 text-center flex items-center flex-col md:text-left px-4 py-8"
+            className="mt-32 text-center flex items-center flex-col md:text-left px-4 py-4 md:py-8"
           >
             <h2 className="text-3xl font-bold mb-4 text-white">Video Uploads</h2>
 
@@ -189,7 +189,7 @@ const Dashboard = () => {
               {videoData.map((video) => (
                 <div
                   key={video._id}
-                  className="relative flex flex-col mt-6 text-white bg-gray-800 shadow-lg rounded-xl w-96"
+                  className="relative m-2 flex flex-col mt-6 text-white bg-gray-800 shadow-lg rounded-xl w-96"
                 >
                   <div className="p-6">
                     <h3 className="mb-2 font-mono text-xl font-medium tracking-normal text-white">
