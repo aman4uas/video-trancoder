@@ -5,8 +5,8 @@ import { apiPostRequest, toastMessage } from '../utils'
 
 const Signin = () => {
   const navigate = useNavigate()
-  const [email, setEmail] = useState('dummy@email.com')
-  const [password, setPassword] = useState('dummy@email.com')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
